@@ -52,18 +52,33 @@ public class MainActivity extends AppCompatActivity implements HmsPickerDialogFr
             }
         });
 
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        Timer timerOneSec = new Timer();
+        timerOneSec.schedule(new TimerTask() {
             @Override
             public void run() {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Calendar cal = Calendar.getInstance();
-                        ((TextView) findViewById(R.id.timeText))
-                                .setText(String.format("%02d", cal.get(Calendar.HOUR_OF_DAY))
-                                        + ":" + String.format("%02d", cal.get(Calendar.MINUTE))
-                                        + ":" + String.format("%02d", cal.get(Calendar.SECOND)));
+                        TextView textUp = ((TextView) findViewById(R.id.timeUpText));
+                        TextView textDown = ((TextView) findViewById(R.id.timeDownText));
+
+                        textUp.setText(String.format("%02d", cal.get(Calendar.HOUR_OF_DAY))
+                                + ":" + String.format("%02d", cal.get(Calendar.MINUTE))
+                                + ":" + String.format("%02d", cal.get(Calendar.SECOND)));
+
+                        cal.add(Calendar.MINUTE, 1);
+
+                        int min = 60 - cal.get(Calendar.MINUTE);
+                        int sec = 60 - cal.get(Calendar.SECOND);
+                        if (min == 60) min = 0;
+                        if (sec == 60) sec = 0;
+                        if (sec == 0) min++;
+
+                        textDown.setText("-" + String.format("%02d", min)
+                                + ":" + String.format("%02d", sec));
+
+                        refreshList();
                     }
                 });
             }
@@ -82,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements HmsPickerDialogFr
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                         times.remove(position);
-                        refreshList();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -122,24 +136,20 @@ public class MainActivity extends AppCompatActivity implements HmsPickerDialogFr
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
 
-        /*// If nothing in list
-        if (times.size() == 0) {
-            strs.add(new String[] {"60:00", "00:00"});
-        }*/
-
         for (int i : times) {
             cal.add(Calendar.SECOND, i * -1);
-            String[] s = new String[2];
+            String[] s = new String[4];
             int mins = i / 60;
             int secs = i % 60;
             s[0] = String.format("%02d", cal.get(Calendar.MINUTE)) + ":" + String.format("%02d", cal.get(Calendar.SECOND));
             s[1] = String.format("%02d", mins) + ":" + String.format("%02d", secs);
+            s[2] = "" + cal.get(Calendar.MINUTE);
+            s[3] = "" + cal.get(Calendar.SECOND);
             strs.add(s);
         }
 
         ListView list = ((ListView) findViewById(R.id.timeList));
         list.setAdapter(new BackTimeListAdapter(getApplicationContext(), strs));
-        list.deferNotifyDataSetChanged();
     }
 
     public void resetList() {
@@ -154,6 +164,5 @@ public class MainActivity extends AppCompatActivity implements HmsPickerDialogFr
     @Override
     public void onDialogHmsSet(int reference, int hours, int minutes, int seconds) {
         times.add((minutes * 60) + seconds);
-        refreshList();
     }
 }
