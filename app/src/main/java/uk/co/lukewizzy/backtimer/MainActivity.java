@@ -2,6 +2,7 @@ package uk.co.lukewizzy.backtimer;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -78,7 +79,12 @@ public class MainActivity extends AppCompatActivity implements HmsPickerDialogFr
                         textDown.setText("-" + String.format("%02d", min)
                                 + ":" + String.format("%02d", sec));
 
-                        refreshList();
+                        if (times.size() == ((ListView) findViewById(R.id.timeList)).getChildCount()) {
+                            updateList();
+                        }
+                        else {
+                            refreshList();
+                        }
                     }
                 });
             }
@@ -150,6 +156,30 @@ public class MainActivity extends AppCompatActivity implements HmsPickerDialogFr
 
         ListView list = ((ListView) findViewById(R.id.timeList));
         list.setAdapter(new BackTimeListAdapter(getApplicationContext(), strs));
+    }
+
+    public void updateList() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR_OF_DAY, 1);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+
+        ListView listView = (ListView) findViewById(R.id.timeList);
+        for (int i = 0; i < listView.getChildCount(); i++)
+        {
+            int time = times.get(i);
+            cal.add(Calendar.SECOND, time * -1);
+            int mins = time / 60;
+            int secs = time % 60;
+
+            View rowView = listView.getChildAt(i);
+            ((TextView) rowView.findViewById(R.id.rowTimeLeft)).setText(String.format("%02d", cal.get(Calendar.MINUTE)) + ":" + String.format("%02d", cal.get(Calendar.SECOND)));
+            ((TextView) rowView.findViewById(R.id.rowTimeMinus)).setText(String.format("%02d", mins) + ":" + String.format("%02d", secs));
+
+            if (cal.get(Calendar.MINUTE) > mins || cal.get(Calendar.MINUTE) == mins && cal.get(Calendar.SECOND) >= secs) {
+                rowView.findViewById(R.id.rowLayout).setBackgroundColor(Color.parseColor("#e8e8e8"));
+            }
+        }
     }
 
     public void resetList() {

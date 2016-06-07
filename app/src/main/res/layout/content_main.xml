@@ -15,16 +15,13 @@
         android:gravity="center_horizontal"
         android:background="#424242"
         android:paddingRight="8dp"
-        android:paddingLeft="8dp"
-        android:onClick="changeCountDirection">
+        android:paddingLeft="8dp">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_gravity="center">
-
-        </RelativeLayout>
+            android:layout_gravity="center" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,56 +45,6 @@
             android:textStyle="bold" />
 
     </FrameLayout>
-
-    <!--FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:gravity="center_horizontal"
-        android:background="#424242"
-        android:paddingRight="8dp"
-        android:paddingLeft="8dp"
-        android:onClick="changeCountDirection">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="00:00"
-                android:id="@+id/timeUpText"
-                android:textSize="26dp"
-                android:textColor="#fff"
-                android:gravity="center_horizontal"
-                android:visibility="gone" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="00:00"
-                android:id="@+id/timeDownText"
-                android:textSize="26dp"
-                android:textColor="#fff"
-                android:gravity="center_horizontal" />
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="-"
-            android:id="@+id/timeSymbol"
-            android:textSize="32dp"
-            android:textColor="#fff"
-            android:gravity="center_horizontal"
-            android:layout_gravity="left|center_vertical"
-            android:textStyle="bold" />
-    </FrameLayout-->
 
     <View
         android:layout_width="match_parent"
